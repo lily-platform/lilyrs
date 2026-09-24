@@ -29,6 +29,22 @@ Rust 1.96.1 is the currently supported and tested toolchain, pinned in
 `rust-version = "1.96.1"` from the workspace. Cargo treats this value as a
 minimum compiler version; newer toolchains are not currently validated.
 
+## Platform testing and compatibility
+
+All testing to date has been performed on Linux. Test runs have not been
+performed on Windows or macOS, so native behavior on those operating systems
+has not been validated.
+
+If you encounter a problem on Windows or macOS, please report it as a
+[GitHub issue](https://github.com/lily-platform/lilyrs/issues), including your
+operating system and architecture, Rust version, steps to reproduce, and
+relevant error output.
+
+If you run into problems on Windows or macOS, we recommend running Lilyrs
+in a Linux Docker container. Docker Desktop runs Linux containers through a
+Linux virtual machine, providing a Linux kernel for the application. The
+[connected examples](examples/README.md) include a Docker Compose setup.
+
 ## License
 
 Lily is dual-licensed under either the [MIT License](LICENSE-MIT) or the
