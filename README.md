@@ -45,6 +45,26 @@ in a Linux Docker container. Docker Desktop runs Linux containers through a
 Linux virtual machine, providing a Linux kernel for the application. The
 [connected examples](examples/README.md) include a Docker Compose setup.
 
+### Potential Windows file-path issue
+
+Source inspection identified a potential Windows startup issue that has not
+been tested on Windows. Protected `${file:...}` references in `lily_config`
+and custom CA file readers in `lily_http_client`, `lily_redis`, and
+`lily_websocket_redis` require the supplied path to match its canonical form.
+On Windows, `std::fs::canonicalize` can turn `C:\secrets\token.txt` into
+`\\?\C:\secrets\token.txt`, causing an existing file to be rejected.
+
+This also affects applications built with `lily_http_api` or `lily_websocket`
+when their configuration uses these file references or integrations. A failure
+can prevent application startup. The main `lily.toml` file path itself is not
+subject to this canonical-path equality check.
+
+For this path-format mismatch, a temporary workaround is to supply the exact
+path returned by `std::fs::canonicalize` for the existing secret or CA file.
+When writing Windows paths in TOML, use single-quoted literal strings or escape
+backslashes correctly. Alternatively, use the Linux Docker setup described
+above. Please report any Windows failures through the issue link above.
+
 ## License
 
 Lily is dual-licensed under either the [MIT License](LICENSE-MIT) or the
